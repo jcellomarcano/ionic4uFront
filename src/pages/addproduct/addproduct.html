@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Agregar producto</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <form [formGroup]="todo" (ngSubmit)="logForm()">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12 col-md-7>
+          <ion-card>
+            <ion-list>
+              <ion-item>
+                <ion-label stacked color="primary">Nombre del producto</ion-label>
+                <ion-input type="text" formControlName="name" placeholder="Ej: Maxlean"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Referencia</ion-label>
+                <ion-input type="text" formControlName="reference" placeholder="Ej: 1138486"></ion-input>
+              </ion-item>
+            </ion-list>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <button ion-button class="button-margin" color="add" type="submit" [disabled]="!todo.valid">Agregar</button>
+  </form>
+</ion-content>

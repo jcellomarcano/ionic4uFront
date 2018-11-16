@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Transferir usuario</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="background">
+
+  <ion-searchbar placeholder="Buscar usuario" (ionInput)="search($event)">
+  </ion-searchbar>
+  <ion-card>
+    <ion-list>
+      <button ion-item *ngFor="let user of users" (click)="transferUser(user)">
+        <ion-avatar item-left>
+          <img src="{{user.profile.profile_pic ? user.profile.profile_pic : 'assets/imgs/defaultuser.png'}}">
+        </ion-avatar>
+        <h2>{{user.first_name + ' ' + user.last_name}}</h2>
+        <p>{{user.username}}</p>
+      </button>
+    </ion-list>
+    <ion-card-content *ngIf="users == null || users?.length == 0">
+      <h6 text-center>No existe usuario con el criterio de busqueda seleccionado</h6>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Saldo a favor de {{vendor_name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid class="table-no-padding">
+    <ion-row>
+      <ion-col col-lg-7 col-md-8>
+        <ion-card color="danger">
+          <ion-row>
+            <ion-col col-4 text-center>
+              <h6>
+                Moneda
+              </h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <h6>
+                Monto
+              </h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <ion-icon name="apps"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        <ion-card>
+          <ion-list *ngFor="let credit of vendor_credits">
+            <ion-row align-items-center>
+              <ion-col col-4 text-center>
+                <h6>{{credit?.currency_code}}</h6>
+              </ion-col>
+              <ion-col col-4 text-center text-wrap>
+                <h6>{{credit?.credit}}</h6>
+              </ion-col>
+              <ion-col col-4 text-center>
+                <button ion-button title="Modificar" small color="update" (click)="updateCredit(credit.id, credit.currency_code)">
+                  <ion-icon name="create"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-list>
+          <ion-card-content *ngIf="vendor_credits == null || vendor_credits?.length == 0">
+            <h6 text-center>Este vendedor no posee creditos</h6>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

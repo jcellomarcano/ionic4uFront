@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Buscar contacto</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="background">
+
+  <ion-searchbar placeholder="Buscar contacto" (ionInput)="search($event)">
+  </ion-searchbar>
+  <ion-card>
+    <ion-list>
+      <button ion-item *ngFor="let user of users" (click)="beginChat(user)">
+        <ion-avatar item-left>
+          <img src="{{user.profile.profile_pic ? user.profile.profile_pic : 'assets/imgs/defaultuser.png'}}">
+        </ion-avatar>
+        <h2>{{user.first_name + ' ' + user.last_name}}</h2>
+        <p>{{user.username}}</p>
+      </button>
+    </ion-list>
+  </ion-card>
+</ion-content>
+

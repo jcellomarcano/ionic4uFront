@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Gestión de usuarios</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid class="table-no-padding">
+    <ion-row>
+      <ion-col col-lg-9 col-md-10>
+        <ion-card color="danger">
+          <ion-row>
+            <ion-col col-4 text-center>
+              <h6>
+                ID
+              </h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <h6>
+                Nombre
+              </h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <h6>
+                Rol
+              </h6>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        <ion-card>
+          <ion-list *ngFor="let user of users">
+            <button no-padding ion-item (click)="userDetail(user.id)">
+              <ion-row align-items-center>
+                <ion-col col-4 text-center>
+                  <h6>{{user?.profile?.code}}</h6>
+                </ion-col>
+                <ion-col col-4 text-center text-wrap>
+                  <h6>{{user?.first_name + ' ' + user?.last_name}}</h6>
+                </ion-col>
+                <ion-col col-4 text-center>
+                  <h6>{{getRole(user) | rolesPipe}}</h6>
+                </ion-col>
+              </ion-row>
+            </button>
+          </ion-list>
+          <ion-infinite-scroll [enabled]="nextPage != null" (ionInfinite)="loadMoreUsers($event)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+          <ion-card-content *ngIf="users == null || users?.length == 0">
+            <h6 text-center>No hay Usuarios</h6>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

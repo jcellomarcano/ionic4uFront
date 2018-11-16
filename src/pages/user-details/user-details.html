@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Modificar usuario: {{username}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-card-header color="primary">
+            Datos personales
+          </ion-card-header>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked color="primary">ID</ion-label>
+              <ion-input type="text" [ngModel]="user?.profile.code" readonly placeholder="Ej: 4UA-00002"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Usuario</ion-label>
+              <ion-input type="text" [ngModel]="user?.username" readonly (ngModelChange)="user.username = $event" placeholder="Ej: raul65"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Nombre</ion-label>
+              <ion-input type="text" [ngModel]="user?.first_name" (ngModelChange)="user.first_name = $event" placeholder="Ej: Raul"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Apellido</ion-label>
+              <ion-input type="text" [ngModel]="user?.last_name" (ngModelChange)="user.last_name = $event" placeholder="Ej: Rodríguez"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Correo</ion-label>
+              <ion-input type="text" [ngModel]="user?.email" (ngModelChange)="user.email = $event" placeholder="Ej: raulr@gmail.com"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="isAdmin">
+              <ion-label stacked color="primary">Rol</ion-label>
+              <ion-select placeholder="Seleccione el rol" interface="popover" [(ngModel)]="role">
+                <ion-option value="{{role.value}}" *ngFor="let role of roles">{{role.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">País</ion-label>
+              <ion-select placeholder="Seleccione el país" interface="popover" [(ngModel)]="user?.profile.country">
+                <ion-option value="{{country.id}}" *ngFor="let country of countries">{{country.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-card-header color="primary">
+            Información de contacto
+          </ion-card-header>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked color="primary">Teléfono 1</ion-label>
+              <ion-input type="text" [ngModel]="user?.profile.phone1" (ngModelChange)="user.profile.phone1 = $event" placeholder="Ej: 0412-3802544"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Teléfono 2</ion-label>
+              <ion-input type="text" [ngModel]="user?.profile.phone2" (ngModelChange)="user.profile.phone2= $event" placeholder="Ej: 0212-32135211"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Dirección</ion-label>
+              <ion-textarea type="text" rows="3" [ngModel]="user?.profile.address" (ngModelChange)="user.profile.address = $event" placeholder="Ej: Calle ribas, Edif. 14, Caracas, Distrito Capital"></ion-textarea>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-card-header color="primary">
+            Redes sociales
+          </ion-card-header>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked color="primary">Facebook</ion-label>
+              <ion-input type="text" [ngModel]="user?.profile.facebook" (ngModelChange)="user.profile.facebook = $event" placeholder="Ej: Raul Rodriguez"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Instagram</ion-label>
+              <ion-input type="text" [ngModel]="user?.profile.instagram" (ngModelChange)="user.profile.instagram = $event" placeholder="Ej: @4ulife"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Twitter</ion-label>
+              <ion-input type="text" [ngModel]="user?.profile.twitter" (ngModelChange)="user.profile.twitter = $event" placeholder="Ej: @Raul45"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-card-header color="primary">
+            Foto de perfil
+          </ion-card-header>
+          <ion-card-content text-center>
+            <div class="image-upload">
+              <label for="file-input">
+                <img title="Cambiar Imagen" class="profile-img" *ngIf="user?.profile.profile_pic" src="{{profileImage}}">
+                <img title="Cambiar Imagen" class="profile-img" *ngIf="!user?.profile.profile_pic" src="assets/imgs/defaultuser.png">
+              </label>
+              <input id="file-input" (change)="fileChange($event)" type="file" accept="image/*"/>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button [disabled]="!user || !disableButton" ion-button class="button" color="update" (click)="updateProfile()">Modificar</button>
+</ion-content>

@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Saldo de vendedores</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid class="table-no-padding">
+    <ion-row>
+      <ion-col col-lg-9 col-md-10>
+        <ion-card color="danger">
+          <ion-row>
+            <ion-col col-4 text-center>
+              <h6>
+                Usuario
+              </h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <h6>
+                Nombre
+              </h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <h6>
+                País
+              </h6>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        <ion-card>
+          <ion-list *ngFor="let vendor of vendors">
+            <button no-padding ion-item (click)="creditDetail(vendor.id, vendor.username)">
+              <ion-row align-items-center>
+                <ion-col col-4 text-center>
+                  <h6>{{vendor?.username}}</h6>
+                </ion-col>
+                <ion-col col-4 text-center text-wrap>
+                  <h6>{{vendor?.first_name + ' ' + vendor?.last_name}}</h6>
+                </ion-col>
+                <ion-col col-4 text-center>
+                  <h6>{{vendor?.profile.country != null ? countries[vendor?.profile.country - 1].name : 'No definido'}}</h6>
+                </ion-col>
+              </ion-row>
+            </button>
+          </ion-list>
+          <ion-infinite-scroll [enabled]="nextPage != null" (ionInfinite)="loadMoreVendors($event)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+          <ion-card-content *ngIf="vendors == null || vendors?.length == 0">
+            <h6 text-center>No hay vendedores</h6>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Seleccione producto</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-8>
+        <ion-card>
+          <ion-list>
+            <ng-container *ngFor="let product of products">
+              <button ion-item *ngIf="product?.prices.length > 0 && returnPrice(currency_code, country_code, product.prices)"
+                      (click)="addItem(product.id, product.name, returnPrice(currency_code, country_code, product.prices))">
+                {{product.name}}
+                <div item-right><b>{{returnPrice(currency_code, country_code, product.prices) | number : '1.2-2'}} <span>{{currency_code}}</span></b>
+                </div>
+              </button>
+            </ng-container>
+            <ion-item *ngIf="products?.length == 0">
+              <div text-center>No hay productos disponibles</div>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

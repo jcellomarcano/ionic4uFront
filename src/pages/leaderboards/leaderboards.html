@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Tabla de líderes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid class="table-no-padding">
+    <ion-row>
+      <ion-col col-lg-4 col-md-8 col-sm-10 style="padding-bottom: 0px">
+        <ion-card>
+          <ion-card-content style="padding-bottom: 0px">
+            <ion-item>
+              <ion-label stacked color="primary">País</ion-label>
+              <ion-select placeholder="Seleccione el país" interface="popover" (ionChange)="changeCountry()" [(ngModel)]="selectedCountry">
+                <ion-option value="{{country.id}}" *ngFor="let country of countries">{{country.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-lg-9 col-md-10>
+        <ion-card color="danger">
+          <ion-row>
+            <ion-col col-4 text-center>
+              <h6>
+                Pos.
+              </h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <h6>
+                Nombre
+              </h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <h6>
+                # Ventas
+              </h6>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        <ion-card>
+          <ion-list *ngFor="let v of vendors; let i = index">
+            <button no-padding ion-item>
+              <ion-row align-items-center>
+                <ion-col col-4 text-center>
+                  <h6>{{i + 1}}</h6>
+                </ion-col>
+                <ion-col col-4 text-center text-wrap>
+                  <h6>{{v.vendor.first_name + ' ' + v.vendor.last_name}}</h6>
+                </ion-col>
+                <ion-col col-4 text-center>
+                  <h6>{{v.sales}}</h6>
+                </ion-col>
+              </ion-row>
+            </button>
+          </ion-list>
+          <ion-card-content *ngIf="vendors == null || vendors?.length == 0">
+            <h6 text-center>No hay Vendedores</h6>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

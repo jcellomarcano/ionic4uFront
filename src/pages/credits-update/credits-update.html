@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Modificar Saldo a favor</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-7>
+        <ion-card>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked color="primary">Moneda</ion-label>
+              <ion-input type="text" readonly [value]="currency_name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Saldo Actual</ion-label>
+              <ion-input type="text" [(ngModel)]="credit" placeholder="Ej: 45"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button ion-button color="update" (click)="updateCredit()">Modificar</button>
+</ion-content>

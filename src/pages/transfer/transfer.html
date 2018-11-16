@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Transferir saldo a: {{username}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-7>
+        <form id="tForm" [formGroup]="form" (ngSubmit)="transfer()">
+          <ion-card>
+            <ion-list>
+              <ion-item>
+                <ion-label stacked color="primary">Moneda</ion-label>
+                <ion-select placeholder="Seleccione" interface="popover" cancelText="Cerrar" formControlName="currency">
+                  <ion-option value="{{currency.id}}" *ngFor="let currency of currencies">{{currency.code}}</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Monto transferencia</ion-label>
+                <ion-input type="text" formControlName="amount" placeholder="Ej: 450"></ion-input>
+              </ion-item>
+            </ion-list>
+          </ion-card>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button type="submit" form="tForm" ion-button color="add" [disabled]="!form.valid">Realizar transferencia</button>
+</ion-content>

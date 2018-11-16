@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Entregas pendientes</ion-title>
+    <!--<ion-buttons end> (For filters)-->
+    <!--<button ion-button icon-only (click)="presentPopover($event)">-->
+    <!--<ion-icon name="more"></ion-icon>-->
+    <!--</button>-->
+    <!--</ion-buttons>-->
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid class="table-no-padding">
+    <ion-row>
+      <ion-col col-lg-9>
+        <ion-card color="danger">
+          <ion-row>
+            <ion-col col-lg-4 text-center>
+              <h6>
+                Fecha
+              </h6>
+            </ion-col>
+            <ion-col col-lg-4 text-center>
+              <h6>
+                Vendedor
+              </h6>
+            </ion-col>
+            <ion-col col-lg-4 text-center>
+              <h6>
+                Total
+              </h6>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        <ion-card>
+          <ion-list *ngFor="let sale of sales">
+            <button no-padding ion-item (click)="saleDetail(sale.id)">
+              <ion-row align-items-center>
+                <ion-col col-lg-4 text-center>
+                  <h6>{{sale?.sale_date | date:'dd/MM/yyyy'}}</h6>
+                </ion-col>
+                <ion-col col-lg-4 text-center text-wrap>
+                  <h6>{{sale?.vendor_name}}</h6>
+                </ion-col>
+                <ion-col col-lg-4 text-center>
+                  <h6>{{(sale?.total_sale + sale?.other_charges) | number : '1.2-2'}} USD</h6>
+                </ion-col>
+              </ion-row>
+            </button>
+          </ion-list>
+          <ion-infinite-scroll [enabled]="nextPage != null" (ionInfinite)="loadMoreSales($event)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+          <ion-card-content *ngIf="sales == null || sales?.length == 0">
+            <h6 text-center>No hay ventas para entregar</h6>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

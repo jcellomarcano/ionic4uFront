@@ -1,0 +1,113 @@
+<ion-split-pane>
+  <ion-menu [content]="content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>4U.LIFE</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="back">
+      <ion-item-divider class="profile" color="secondary">
+        <ion-avatar item-start>
+          <img src="{{profileImage}}">
+        </ion-avatar>
+        <h2 style="color: #4A148C"><b>{{user?.first_name + ' ' + user?.last_name}}</b></h2>
+        <p class="primary">{{user?.groups[0]?.name | rolesPipe}}</p>
+        <p class="primary"><b>Saldo:</b> {{credit | number : '1.2-2'}} USD</p>
+      </ion-item-divider>
+      <div *ngIf="user?.groups[0]?.name == 'Vendor' || user?.groups[0]?.name == 'Admin'">
+        <ion-item-divider class="secondary" color="primary">
+          <ion-icon item-end name='clipboard'></ion-icon>
+          {{'Ventas'}}
+        </ion-item-divider>
+        <!--<button *ngIf="user?.groups[0].name == 'Admin'" class="primary" color="secondary" ion-item menuClose>-->
+          <!--<ion-icon item-start name='card'></ion-icon>-->
+          <!--{{'Ventas por aprobar'}}-->
+        <!--</button>-->
+        <button class="primary" color="secondary" ion-item menuClose (click)="openPage('SalelistPage')">
+          <ion-icon item-start name='checkmark'></ion-icon>
+          {{'Ventas concretadas'}}
+        </button>
+        <button class="primary" color="secondary" ion-item menuClose (click)="openPage('SalePage')">
+          <ion-icon item-start name='cart'></ion-icon>
+          {{'Registrar venta'}}
+        </button>
+      </div>
+      <div *ngIf="user?.groups[0]?.name == 'Vendor' || user?.groups[0]?.name == 'Admin'">
+        <ion-item-divider class="secondary" color="primary">
+          <ion-icon item-end name='open'></ion-icon>
+          {{'Ventas externas'}}
+        </ion-item-divider>
+        <!--<button *ngIf="user?.groups[0].name == 'Admin'" class="primary" color="secondary" ion-item menuClose>-->
+        <!--<ion-icon item-start name='card'></ion-icon>-->
+        <!--{{'Ventas por aprobar'}}-->
+        <!--</button>-->
+        <button class="primary" color="secondary" ion-item menuClose (click)="openPageParams('SalelistPage', {external: true})">
+          <ion-icon item-start name='done-all'></ion-icon>
+          {{'Ventas externas concretadas'}}
+        </button>
+        <button class="primary" color="secondary" ion-item menuClose (click)="openPage('SaleExternalPage')">
+          <ion-icon item-start name='document'></ion-icon>
+          {{'Registrar venta externa'}}
+        </button>
+      </div>
+      <div *ngIf="user?.groups[0]?.name == 'Dispatch'">
+        <ion-item-divider class="secondary" color="primary">
+          <ion-icon item-end name='filing'></ion-icon>
+          {{'Despacho'}}
+        </ion-item-divider>
+        <button class="primary" color="secondary" ion-item menuClose (click)="openPage('DispatchlistPage')">
+          <ion-icon item-start name='clipboard'></ion-icon>
+          {{'Entregas pendientes'}}
+        </button>
+      </div>
+      <div *ngIf="user?.groups[0]?.name == 'Admin'">
+        <ion-item-divider class="secondary" color="primary">
+          <ion-icon item-end name='build'></ion-icon>
+          {{'Administración'}}
+        </ion-item-divider>
+        <button class="primary" color="secondary" ion-item menuClose (click)="openPage('CreditsPage')">
+          <ion-icon item-start name='cash'></ion-icon>
+          {{'Saldo de vendedores'}}
+        </button>
+        <button class="primary" color="secondary" ion-item menuClose (click)="openPage('UserlistPage')">
+          <ion-icon item-start name='contacts'></ion-icon>
+          {{'Gestión de Usuarios'}}
+        </button>
+        <button class="primary" color="secondary" ion-item menuClose (click)="openPage('ProductsPage')">
+          <ion-icon item-start name='basket'></ion-icon>
+          {{'Gestión de Productos'}}
+        </button>
+      </div>
+      <ion-item-divider class="secondary" color="primary">
+        <ion-icon item-end name='star'></ion-icon>
+        {{'Logros'}}
+      </ion-item-divider>
+      <button class="primary" color="secondary" ion-item menuClose (click)="openPage('LeaderboardsPage')">
+        <ion-icon item-start name='arrow-round-up'></ion-icon>
+        {{'Tabla de líderes'}}
+      </button>
+      <ion-item-divider class="secondary" color="primary">
+        <ion-icon item-end name='person'></ion-icon>
+        {{'Perfil de Usuario'}}
+      </ion-item-divider>
+      <button class="primary" color="secondary" ion-item menuClose (click)="openPage('TransferSearchUserPage')">
+        <ion-icon item-start name='swap'></ion-icon>
+        {{'Transferir saldo'}}
+      </button>
+      <button class="primary" color="secondary" ion-item menuClose (click)="changeProfile()">
+        <ion-icon item-start name='settings'></ion-icon>
+        {{'Editar Perfil'}}
+      </button>
+      <button class="primary" color="secondary" ion-item menuClose (click)="logout()">
+        <ion-icon item-start name='exit'></ion-icon>
+        {{'Cerrar Sesión'}}
+      </button>
+    </ion-content>
+  </ion-menu>
+
+  <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+  <ion-nav [root]="rootPage" #content swipeBackEnabled="false" main> </ion-nav>
+  <ion-fab right bottom (click)="openPage('ChatListPage')" *ngIf="chatButton">
+    <button ion-fab><ion-icon name="chatboxes"></ion-icon></button>
+  </ion-fab>
+</ion-split-pane>

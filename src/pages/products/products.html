@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Gestión de productos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <button ion-button icon-left class="button-margin" color="add" (click)="addProduct()"><ion-icon name="basket"></ion-icon>Agregar producto</button>
+  <ion-grid class="table-no-padding">
+    <ion-card color="danger">
+      <ion-row>
+        <ion-col col-2 col-lg-3 text-center>
+          <h6>
+            ID
+          </h6>
+        </ion-col>
+        <ion-col col-5 col-lg-3 text-center>
+          <h6>
+            Nombre
+          </h6>
+        </ion-col>
+        <ion-col col-5 col-lg-3 text-center>
+          <h6>
+            Referencia
+          </h6>
+        </ion-col>
+        <ion-col col-lg-3 text-center hideWhen="android, ios">
+          <ion-icon name="apps"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <ion-card>
+      <ion-list>
+        <ion-item-sliding *ngFor="let prod of products">
+          <ion-item>
+            <ion-row align-items-center>
+              <ion-col col-2 col-lg-3  text-center>
+                <h6>{{prod.id}}</h6>
+              </ion-col>
+              <ion-col col-5 col-lg-3 text-center>
+                <h6>{{prod.name}}</h6>
+              </ion-col>
+              <ion-col col-5 col-lg-3 text-center>
+                <h6>{{prod.reference}}</h6>
+              </ion-col>
+              <ion-col col-lg-3 text-center hideWhen="ios, android">
+                  <button ion-button title="Precios" small color="add" (click)="checkProductPrices(prod.id, prod.name)"><ion-icon name="cash"></ion-icon></button>
+                  <button ion-button title="Modificar" small color="update" (click)="updateProduct(prod)"><ion-icon name="create"></ion-icon></button>
+                  <button ion-button title="Eliminar" small color="delete"  (click)="deleteProduct(prod.id, prod.reference)"><ion-icon name="trash"></ion-icon></button>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+          <ion-item-options showWhen="android, ios" side="right">
+            <button ion-button color="add" (click)="checkProductPrices(prod.id, prod.name)"><ion-icon name="cash"></ion-icon>Precios</button>
+            <button ion-button color="update" (click)="updateProduct(prod)"><ion-icon name="create"></ion-icon>Modif.</button>
+            <button ion-button color="delete" (click)="deleteProduct(prod.id, prod.reference)"><ion-icon name="trash"></ion-icon>Elim.</button>
+          </ion-item-options>
+        </ion-item-sliding>
+        <ion-row *ngIf="products?.length == 0">
+          <ion-col col-12 text-center>
+            <h6>No hay productos disponibles</h6>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <ion-infinite-scroll [enabled]="nextPage != null" (ionInfinite)="loadMoreProducts($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-card>
+  </ion-grid>
+</ion-content>

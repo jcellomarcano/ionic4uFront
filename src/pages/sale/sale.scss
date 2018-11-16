@@ -1,0 +1,12 @@
+page-sale {
+  button{
+    margin: 0 0 0 10px!important;
+  }
+
+  .quantity {
+    .item-inner, ion-item {
+      border-bottom-color: transparent !important; // remove quantity underline
+      box-shadow: none !important;
+    }
+  }
+}

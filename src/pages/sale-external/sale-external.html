@@ -1,0 +1,153 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Registrar venta externa</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button icon-start ion-button (click)="openDirectory()"><ion-icon name="book"></ion-icon>Directorio de clientes</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-10 col-md-6>
+        <form [formGroup]="countryFormGroup" (ngSubmit)="executeSale()" #countryForm="ngForm">
+          <ion-card>
+            <ion-card-header color="primary">
+              País de la venta
+            </ion-card-header>
+            <ion-list>
+              <ion-item>
+                <ion-label stacked color="primary">País</ion-label>
+                <ion-select placeholder="Seleccione el país" interface="popover" cancelText="Cerrar" formControlName="country">
+                  <ion-option value="{{country.code}}" *ngFor="let country of countries">{{country.name}}</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Moneda</ion-label>
+                <ion-select placeholder="Seleccione la moneda" interface="popover" cancelText="Cerrar" formControlName="currency">
+                  <ion-option value="{{currency.code}}" *ngFor="let currency of currencies">{{currency.code}}
+                  </ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-list>
+          </ion-card>
+        </form>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 col-md-6>
+        <form [formGroup]="saleTypeFormGroup">
+          <ion-card>
+            <ion-card-header color="primary">
+              Información de pago
+            </ion-card-header>
+            <ion-item>
+              <ion-label stacked color="primary">Tipo de envío</ion-label>
+              <ion-select #c placeholder="Seleccione el tipo envío" cancelText="Cerrar" formControlName="index_charge" (ionChange)="updateAditionalCharge(c.value)">
+                <ion-option value="{{i}}" *ngFor="let c of chargeTypes; let i = index">{{c.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked color="primary">Tipo de pago</ion-label>
+              <ion-select #saletype placeholder="Seleccione el tipo de pago" cancelText="Cerrar" formControlName="index_sale" (ionChange)="updateAditionalSale(saletype.value)">
+                <ion-option value="{{i}}" *ngFor="let c of saleType; let i = index">{{c.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+            <ng-container *ngIf="saletype.value == 0 || saletype.value == 2">
+              <ion-item>
+                <ion-label stacked color="primary">N° Depósito</ion-label>
+                <ion-input type="text" formControlName="dep_reference" placeholder="Ej: 47864014701"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Monto depósito</ion-label>
+                <ion-input #deposit type="number" formControlName="dep_amount" placeholder="Ej: 145"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="saletype.value == 2">
+                <ion-label  stacked color="primary">Saldo a utilizar</ion-label>
+                <ion-input readonly="true" type="number" min="0" [value]="getCredit(deposit.value)"></ion-input>
+              </ion-item>
+            </ng-container>
+          </ion-card>
+        </form>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-card-header color="primary">
+            Comprobante de Pago
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <img class="image" *ngIf="img1" [src]="img1" center/>
+              <br>
+              <input class="file-input" (change)="fileChange($event)" type="file" accept="image/*"/>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 col-md-8>
+        <form [formGroup]="clientDataFormGroup">
+          <ion-card>
+            <ion-card-header color="primary">
+              Información de la venta
+            </ion-card-header>
+            <ion-list>
+              <ion-item>
+                <ion-label stacked color="primary">Nombre del cliente</ion-label>
+                <ion-input type="text" formControlName="client" placeholder="Ej: Max Villegas"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Teléfono</ion-label>
+                <ion-input type="text" formControlName="phone" placeholder="Ej: 0212-3254788"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Dirección</ion-label>
+                <ion-input type="text" formControlName="address"
+                           placeholder="Ej: Calle N° 5, Avenida San Martín, Edo. Miranda"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Detalles de los productos</ion-label>
+                <ion-textarea rows="5" formControlName="comment" placeholder="Inserte detalles de los productos externos a enviar"></ion-textarea>
+              </ion-item>
+            </ion-list>
+          </ion-card>
+        </form>
+      </ion-col>
+    </ion-row>
+    <ion-row class="table-no-padding">
+      <ion-col col-12 col-md-6 col-lg-6>
+        <ion-card>
+          <ion-card-header color="primary">
+            Cargos adicionales
+          </ion-card-header>
+          <ion-card-content text-right color="primary">
+            <div>Costo de envío: {{aditionalCharge | number : '1.2-2'}} {{this.countryFormGroup?.value.currency}}</div>
+            <div>Costo de servicio: {{aditionalSale | number : '1.2-2'}} {{this.countryFormGroup?.value.currency}}</div>
+            <div><u><b>Total: </b>{{(aditionalCharge + aditionalSale ) | number : '1.2-2'}}
+              {{this.countryFormGroup?.value.currency}}</u></div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-right class="button-margin" color="add" (click)="countryForm.ngSubmit.emit()"
+                [disabled]="!clientDataFormGroup.valid || !saleTypeFormGroup.valid || !countryFormGroup.valid">
+          Siguiente
+          <ion-icon name="arrow-round-forward"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

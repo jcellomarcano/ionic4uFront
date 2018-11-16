@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Agregar precio</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <form [formGroup]="todo" (ngSubmit)="createPrice()">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12 col-md-6>
+          <ion-card>
+            <ion-list>
+              <ion-item>
+                <ion-label stacked color="primary">País</ion-label>
+                <ion-select placeholder="Seleccione el País" interface="popover" cancelText="Cerrar" formControlName="country">
+                  <ion-option value="{{country.id}}" *ngFor="let country of countries">{{country.name}}</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-row>
+                <ion-col col-7 no-padding>
+                  <ion-item>
+                    <ion-label stacked color="primary">Precio</ion-label>
+                    <ion-input type="text" formControlName="price" placeholder="Valor"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col col-5 no-padding>
+                  <ion-item>
+                    <ion-label stacked color="primary">Moneda</ion-label>
+                    <ion-select placeholder="Seleccione" interface="popover" cancelText="Cerrar" formControlName="currency">
+                      <ion-option value="{{currency.id}}" *ngFor="let currency of currencies">{{currency.code}}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-list>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <button ion-button class="button-margin" color="add" type="submit" [disabled]="!todo.valid">Crear precio</button>
+  </form>
+</ion-content>

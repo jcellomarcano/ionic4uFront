@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Cliente: {{name}}</ion-title>
+    <ion-buttons end>
+      <button ion-button form="tForm" type="submit" icon-only>
+        <ion-icon name="create"></ion-icon>
+      </button>
+      <button ion-button (click)="deleteClient()" icon-only>
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-7>
+        <form id="tForm" [formGroup]="todo" (ngSubmit)="updateClient()">
+          <ion-card>
+            <ion-list>
+              <ion-item>
+                <ion-label stacked color="primary">Nombre del cliente</ion-label>
+                <ion-input readonly type="text" formControlName="client" placeholder="Ej: Carlos Rodríguez"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">País</ion-label>
+                <ion-select placeholder="Seleccione el país" interface="popover" cancelText="Cerrar"
+                            formControlName="country">
+                  <ion-option value="{{country.id}}" *ngFor="let country of countries">{{country.name}}</ion-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Teléfono</ion-label>
+                <ion-input type="text" formControlName="phone" placeholder="Ej: 0212-3213255"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked color="primary">Dirección</ion-label>
+                <ion-input type="text" formControlName="address" placeholder="Ej: Urb. el Paraíso, Caracas"></ion-input>
+              </ion-item>
+            </ion-list>
+          </ion-card>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button ion-button class="button-margin" (click)="selectClient()">Utilizar datos venta</button>
+</ion-content>

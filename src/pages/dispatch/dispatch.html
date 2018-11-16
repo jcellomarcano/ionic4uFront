@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Notificar envío productos</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-7>
+        <ion-card>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked color="primary">Foto</ion-label>
+            </ion-item>
+            <img class="image" *ngIf="img1" [src]="img1" center/>
+            <input class="file-input" (change)="fileChange($event)" type="file" accept="image/*"/>
+            <ion-item>
+              <ion-label stacked color="primary">Comentario</ion-label>
+              <ion-textarea type="text" rows="3" [(ngModel)]="comment"
+                            placeholder="Inserte comentarios adicionales"></ion-textarea>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button ion-button color="warning" (click)="updateSaleTracking()">Continuar</button>
+</ion-content>

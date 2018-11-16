@@ -1,0 +1,219 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Detalles de la venta {{externalSale ? 'externa' : ''}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button class="cancel" color="delete" (click)="removeSale()" *ngIf="!sale?.approved">Cancelar venta</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-list>
+            <ion-item-divider color="danger">
+              Datos de la venta
+            </ion-item-divider>
+            <ion-item>
+              <ion-label color="primary">Referencia</ion-label>
+              <div item-end>{{sale?.sale_reference}}</div>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary">País origen</ion-label>
+              <div item-end>{{country | async}}</div>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary">Moneda</ion-label>
+              <div item-end>USD</div>
+            </ion-item>
+            <ion-item-divider color="danger">
+              Estado de la venta
+            </ion-item-divider>
+            <ion-item>
+              <ion-label color="primary">Aprobado</ion-label>
+              <div item-end>{{sale?.approved ? 'Si' : 'No'}}</div>
+            </ion-item>
+            <ion-item *ngIf="sale?.approved">
+              <ion-label color="primary">Fecha aprobación</ion-label>
+              <div item-end>{{sale?.approval_date | date:'dd/MM/yyyy'}}</div>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary">Despachado</ion-label>
+              <div item-end>{{sale?.tracking.dispatched ? 'Si' : 'No'}}</div>
+            </ion-item>
+            <ion-item *ngIf="sale?.tracking.dispatched">
+              <ion-label color="primary">Fecha Despacho</ion-label>
+              <div item-end>{{sale?.tracking.dispatched_date | date:'dd/MM/yyyy'}}</div>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-list>
+            <ion-item-divider color="danger">
+              Información del cliente
+            </ion-item-divider>
+            <ion-item *ngIf="vendor">
+              <ion-label color="primary">Nombre vendedor</ion-label>
+              <div item-end>{{vendor}}</div>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary">Nombre cliente</ion-label>
+              <div item-end>{{sale?.client}}</div>
+            </ion-item>
+
+            <ion-item>
+              <ion-label color="primary">Teléfono</ion-label>
+              <div item-end>{{sale?.phone}}</div>
+            </ion-item>
+
+            <ion-item-divider color="danger">
+              Dirección
+            </ion-item-divider>
+            <ion-item text-wrap>
+              {{sale?.address}}
+            </ion-item>
+            <ion-item-divider color="danger">
+              Comentarios
+            </ion-item-divider>
+            <ion-item text-wrap>
+              {{sale?.comment == '' ?  'Sin comentarios': sale?.comment}}
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+
+
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-list>
+            <ion-item-divider color="danger">
+              Información de pago
+            </ion-item-divider>
+            <ion-item>
+              <ion-label color="primary">Tipo de pago</ion-label>
+              <div item-end>{{getSaleT(sale?.sale_type)}}</div>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary">Tipo de envío</ion-label>
+              <div item-end>{{getChargeT(sale?.charge_type)}}</div>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary">Fecha de la venta</ion-label>
+              <div item-end>{{sale?.sale_date | date:'dd/MM/yyyy'}}</div>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary">Cargos adicionales</ion-label>
+              <div item-end>{{sale?.other_charges}}</div>
+            </ion-item>
+            <ion-item>
+              <ion-label color="primary">Monto total</ion-label>
+              <div item-end>{{(sale?.total_sale + sale?.other_charges) | number : '1.2-2'}}</div>
+            </ion-item>
+            <ion-item *ngIf="sale?.sale_type == 'S' || sale?.sale_type == 'M'">
+              <ion-label color="primary">Monto depósito</ion-label>
+              <div item-end>{{sale?.dep_amount}}</div>
+            </ion-item>
+            <ion-item *ngIf="sale?.sale_type == 'C' || sale?.sale_type == 'M'">
+              <ion-label color="primary">Saldo utilizado</ion-label>
+              <div item-end>{{positiveNumber(sale?.total_sale + sale?.other_charges - sale?.dep_amount)}}</div>
+            </ion-item>
+            <ion-item *ngIf="sale?.sale_type == 'S' || sale?.sale_type == 'M'">
+              <ion-label color="primary">Referencia depósito</ion-label>
+              <div item-end>{{sale?.dep_reference}}</div>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-list>
+            <ion-item-divider color="danger">
+              Comprobante de pago
+            </ion-item-divider>
+            <ion-item text-wrap>
+              <button class="dispatch-img" ><img [src]="realUrl + sale?.photo" imageViewer></button>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-list>
+            <ng-container *ngIf="sale?.tracking.dispatched">
+              <ion-item-divider color="danger">
+                Despacho
+              </ion-item-divider>
+              <ion-item text-wrap>
+                <button class="dispatch-img" ><img [src]="realUrl + sale?.tracking.photo" imageViewer></button>
+              </ion-item>
+              <ion-item text-wrap>
+                <b class="primary">Comentarios:</b> {{sale?.tracking.dispatch_comment}}
+              </ion-item>
+            </ng-container>
+          </ion-list>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row class="table-no-padding" *ngIf="!externalSale">
+      <ion-col col-12 col-lg-10>
+        <ion-card>
+          <ion-list>
+            <ion-item-divider style="padding: 10px" color="danger">
+              Productos de la venta
+            </ion-item-divider>
+          </ion-list>
+          <ion-row>
+            <ion-col col-5 text-center>
+              <h6><b>Nombre</b></h6>
+            </ion-col>
+            <ion-col col-3 text-center>
+              <h6><b>Precio</b></h6>
+            </ion-col>
+            <ion-col col-4 text-center>
+              <h6><b>Cantidad</b></h6>
+            </ion-col>
+            <ion-col col-12 text-center *ngIf="products?.length == 0">
+              <h6>No hay productos</h6>
+            </ion-col>
+          </ion-row>
+          <ion-list class="quantity">
+            <ion-item *ngFor="let product of products; let i = index">
+              <ion-row align-items-center>
+                <ion-col col-5 text-center>
+                  <h6>{{product?.product_name}}</h6>
+                </ion-col>
+                <ion-col col-3 text-center>
+                  <h6>{{product?.price | number : '1.2-2'}}</h6>
+                </ion-col>
+                <ion-col col-4 text-center>
+                  <h6>{{product?.quantity}}</h6>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-list>
+          <ion-card-content text-right color="primary">
+            <div>Subtotal: {{sale?.total_sale | number : '1.2-2'}}</div>
+            <div color="danger"><i>Cargos adicionales: </i>{{sale?.other_charges}}</div>
+            <div><b>TOTAL: </b>{{(sale?.total_sale+sale?.other_charges) | number : '1.2-2'}} USD</div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button class="button-approve" ion-button color="update" (click)="approveSale()" *ngIf="admin && !sale?.approved">
+    Aprobar
+  </button>
+  <button class="button-approve" ion-button color="warning" (click)="notifyDispatch()" *ngIf="dispatch && sale?.approved && !externalSale">
+    Notificar envío
+  </button>
+</ion-content>

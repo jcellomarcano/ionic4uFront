@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Precios de {{productName}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="background">
+  <button ion-button icon-left class="button-margin" color="add" (click)="addProductPrice()">
+    <ion-icon name="cash"></ion-icon>
+    Nuevo precio
+  </button>
+  <ion-grid class="table-no-padding">
+    <ion-card color="danger">
+      <ion-row>
+        <ion-col col-3 text-center>
+          <h6>
+            País
+          </h6>
+        </ion-col>
+        <ion-col col-2 text-center>
+          <h6>
+            Mon.
+          </h6>
+        </ion-col>
+        <ion-col col-3 text-center>
+          <h6>
+            Valor
+          </h6>
+        </ion-col>
+        <ion-col col-3 text-center>
+          <h6>
+            Acción
+          </h6>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <ion-card>
+      <ion-list *ngFor="let price of prices">
+        <ion-item>
+          <ion-row align-items-center>
+            <ion-col col-3 text-center>
+              <h6>{{price.country_name}}</h6>
+            </ion-col>
+            <ion-col col-2  text-center>
+              <h6>{{price.currency_code}}</h6>
+            </ion-col>
+            <ion-col col-3 text-center>
+              <h6>{{price.price}}</h6>
+            </ion-col>
+            <ion-col col-3 text-center>
+              <button ion-button title="Eliminar" small color="delete" (click)="deleteProductPrice(price.id, price.country_name, price.currency_code, price.price)">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+      <ion-row *ngIf="prices?.length == 0">
+        <ion-col col-12 text-center>
+          <h6>No hay precios disponibles</h6>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </ion-grid>
+</ion-content>

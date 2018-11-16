@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Directorio de clientes</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addClient()">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="background">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-8 col-lg-6>
+        <ion-searchbar placeholder="Buscar cliente" (ionInput)="search($event)">
+        </ion-searchbar>
+        <ion-card>
+          <ion-list>
+            <button ion-item *ngFor="let client of clients" (click)="selectClient(client.id)">
+              <h6>{{client.client}}</h6>
+            </button>
+          </ion-list>
+          <ion-card-content *ngIf="clients == null || clients?.length == 0">
+            <h6 text-center>No existe cliente con el criterio de busqueda seleccionado</h6>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
